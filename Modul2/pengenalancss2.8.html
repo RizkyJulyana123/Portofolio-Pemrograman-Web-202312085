@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 15px;
+    background-color: #af4c89;
+    padding: 10px;
+}
+
+.grid-item {
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.grid-item-1 { background-color: #36f4eb; }
+.grid-item-2 { background-color: #af4c89; }
+.grid-item-3 { background-color: #f32121; }
+.grid-item-4 { background-color: #060606; }
+.grid-item-5 { background-color: #2782b0; }
+.grid-item-6 { background-color: #FF9800; }
+
+.span-two-columns { grid-column: span 2; }
+</style>
+</head>
+<body>
+
+</body>
+</html>
+
+<div class="grid-container">
+    <div class="grid-item">1</div>
+    <div class="grid-item">2</div>
+    <div class="grid-item">3</div>
+    <div class="grid-item">4</div>
+    <div class="grid-item">5</div>
+    <div class="grid-item">6</div>
+</div>
+
+</body>
+</html>
