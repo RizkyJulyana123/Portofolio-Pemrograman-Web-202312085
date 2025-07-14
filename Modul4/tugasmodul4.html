@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Elektronik Cepat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; }
+        #produk-utama img { max-width: 100%; height: auto; }
+        .produk-thumbnail img { width: 100px; cursor: pointer; }
+        .produk-thumbnail:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Toko Elektronik Cepat</h2>
+        <p id="waktu" class="text-center"></p>
+
+        <div id="produk-utama" class="text-center mb-4">
+            <img id="gambar-produk" src="" alt="Produk">
+            <h4 id="nama-produk"></h4>
+            <p id="harga-produk"></p>
+            <button class="btn btn-secondary" onclick="gantiProduk(-1)">Previous</button>
+            <button class="btn btn-secondary" onclick="gantiProduk(1)">Next</button>
+        </div>
+
+        <div class="row text-center produk-thumbnail">
+            <!-- Thumbnails -->
+        </div>
+
+        <hr>
+        <h5>Form Pemesanan</h5>
+        <form id="formPemesanan">
+            <div class="mb-2">
+                <label>Nama Pemesan:</label>
+                <input type="text" id="namaPemesan" class="form-control">
+            </div>
+            <div class="mb-2">
+                <label>Kontak:</label>
+                <input type="text" id="kontak" class="form-control">
+            </div>
+            <div class="mb-2">
+                <label>Jumlah Pesan:</label>
+                <input type="number" id="jumlah" class="form-control">
+            </div>
+            <div class="mb-2">
+                <label>Kode Promo:</label>
+                <input type="text" id="promo" class="form-control">
+            </div>
+            <button type="button" onclick="prosesPesanan()" class="btn btn-success">Pesan</button>
+        </form>
+
+        <div id="output" class="mt-4"></div>
+    </div>
+
+    <script>
+        const produk = [
+            { nama: "Laptop Gaming", harga: 10000000, gambar: "https://placehold.co/400x250?text=Laptop" },
+            { nama: "Smartphone 5G", harga: 5000000, gambar: "https://placehold.co/400x250?text=Smartphone" },
+            { nama: "Headphone Wireless", harga: 1500000, gambar: "https://placehold.co/400x250?text=Headphone" },
+        ];
+
+        let indeks = 0;
+
+        function tampilkanProduk(index) {
+            document.getElementById("gambar-produk").src = produk[index].gambar;
+            document.getElementById("nama-produk").innerText = produk[index].nama;
+            document.getElementById("harga-produk").innerText = "Rp " + produk[index].harga.toLocaleString();
+        }
+
+        function gantiProduk(arah) {
+            indeks += arah;
+            if (indeks >= produk.length) indeks = 0;
+            if (indeks < 0) indeks = produk.length - 1;
+            tampilkanProduk(indeks);
+        }
+
+        function buatThumbnail() {
+            const container = document.querySelector(".produk-thumbnail");
+            produk.forEach((item, i) => {
+                const col = document.createElement("div");
+                col.className = "col"
+                col.innerHTML = `<img src="${item.gambar}" onclick="tampilkanProduk(${i})">`;
+                container.appendChild(col);
+            });
+        }
+
+        function prosesPesanan() {
+            const nama = document.getElementById("namaPemesan").value;
+            const kontak = document.getElementById("kontak").value;
+            const jumlah = parseInt(document.getElementById("jumlah").value);
+            const promo = document.getElementById("promo").value.trim().toUpperCase();
+
+            if (!nama || !jumlah) {
+                alert("Nama dan jumlah pesanan wajib diisi!");
+                return;
+            }
+
+            let subtotal = produk[indeks].harga * jumlah;
+            let diskon = 0;
+            if (promo === "DISKON10") {
+                diskon = subtotal * 0.1;
+            }
+            let total = subtotal - diskon;
+
+            const orderID = "NW-" + Math.floor(Math.random() * 900 + 100);
+
+            document.getElementById("output").innerHTML = `
+                <h5>Detail Pemesanan</h5>
+                <p>Nama: ${nama}</p>
+                <p>Order ID: ${orderID}</p>
+                <p>Produk: ${produk[indeks].nama}</p>
+                <p>Jumlah: ${jumlah}</p>
+                <p>Subtotal: Rp ${subtotal.toLocaleString()}</p>
+                <p>Diskon: Rp ${diskon.toLocaleString()}</p>
+                <p><strong>Total Akhir: Rp ${total.toLocaleString()}</strong></p>
+            `;
+        }
+
+        function tampilkanWaktu() {
+            const waktuSekarang = new Date();
+            document.getElementById("waktu").innerText = waktuSekarang.toLocaleString();
+        }
+
+        // Inisialisasi
+        tampilkanProduk(indeks);
+        buatThumbnail();
+        tampilkanWaktu();
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aplikasi To-Do List</title>
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .delete-btn {
+            margin-left: 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <h2>To-Do List Sederhana</h2>
+    <input type="text" id="input-todo" placeholder="Ketik tugas baru...">
+    <button onclick="tambahTugas()">Tambah</button>
+    <ul id="daftar-tugas"></ul>
+
+    <script>
+        var tugas = [];
+
+        function tambahTugas() {
+            var inputElement = document.getElementById("input-todo");
+            var newTask = inputElement.value.trim(); // Trim whitespace
+
+            if (newTask !== "") { // Only add if not empty
+                tugas.push(newTask);
+                inputElement.value = "";
+                tampilkanDaftar();
+            } else {
+                alert("Please enter a task!");
+            }
+        }
+
+        function hapusTugas(index) {
+            tugas.splice(index, 1); // Remove 1 element at the specified index
+            tampilkanDaftar(); // Refresh the list
+        }
+
+        function tampilkanDaftar() {
+            var daftarElement = document.getElementById("daftar-tugas");
+            daftarElement.innerHTML = ""; // Clear existing list
+
+            for (let i = 0; i < tugas.length; i++) {
+                // Create li element
+                let listItem = document.createElement("li");
+
+                // Add task text
+                let taskText = document.createTextNode(tugas[i]);
+                listItem.appendChild(taskText);
+
+                // Create delete button
+                let deleteButton = document.createElement("button");
+                deleteButton.className = "delete-btn";
+                deleteButton.textContent = "Hapus";
+                // Set onclick event with the current index
+                deleteButton.setAttribute("onclick", "hapusTugas(" + i + ")");
+                listItem.appendChild(deleteButton);
+
+                // Append li to the ul
+                daftarElement.appendChild(listItem);
+            }
+        }
+    </script>
+</body>
+</html>
